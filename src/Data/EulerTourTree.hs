@@ -30,21 +30,19 @@ module Data.EulerTourTree
   ) where
 
 -- {{{ Imports
-import           Control.Applicative             hiding (empty)
-import           Control.Applicative.Combinators
-import           Control.Monad
-import           Control.Monad.State.Lazy
-import           Control.Monad.Trans.Maybe
+import           Control.Applicative             ((<|>))
+import           Control.Applicative.Combinators (endBy)
+import           Control.Monad                   (MonadPlus (..), guard)
+import           Control.Monad.State.Lazy        (MonadState (..), evalStateT)
 import           Data.FingerTree                 hiding (empty, null, singleton)
 import qualified Data.FingerTree                 as FingerTree
-import           Data.Foldable
-import           Data.List.Unique
-import           Data.Maybe
+import           Data.Foldable                   (Foldable (..))
+import           Data.List.Unique                (allUnique)
+import           Data.Maybe                      (fromMaybe)
 import           Data.Monoid
 import           Data.Set                        (Set)
 import qualified Data.Set                        as Set
-import           Data.Tree
-import           Debug.Trace
+import           Data.Tree                       (Tree (..))
 -- }}}
 
 searchM :: MonadPlus m => Measured v a => (v -> v -> Bool) -> FingerTree v a -> m (FingerTree v a, a, FingerTree v a)
