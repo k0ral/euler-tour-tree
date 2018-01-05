@@ -212,7 +212,7 @@ splice (EulerTourTree inviteeTree) node (EulerTourTree hostTree) = do
 
 -- | /O(log n)/ Rotate @tree@ such that @node@ is the new root.
 --
--- Return 'Nothing' if @node@ isn't found in @tree@.
+-- Fail if @node@ isn't found in @tree@.
 reroot :: MonadPlus m
        => Ord node
        => node                 -- ^ Denoted by @node@
