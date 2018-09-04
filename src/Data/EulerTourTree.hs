@@ -75,14 +75,16 @@ data EulerTourMonoid node = EulerTourMonoid
 
 deriving instance Show node => Show (EulerTourMonoid node)
 
-instance Ord node => Monoid (EulerTourMonoid node) where
-  mempty = EulerTourMonoid mempty mempty mempty mempty mempty
-  EulerTourMonoid a b c d e `mappend` EulerTourMonoid a' b' c' d' e' = result where
+instance Ord node => Semigroup (EulerTourMonoid node) where
+  EulerTourMonoid a b c d e <> EulerTourMonoid a' b' c' d' e' = result where
     result = EulerTourMonoid (a <> a') (b <> bMiddle <> b') (c <> c') (d <> d') (e <> e')
     bMiddle = fromMaybe mempty $ do
       l <- getLast c
       f <- getFirst a'
       return $ Set.singleton (min l f, max l f)
+
+instance Ord node => Monoid (EulerTourMonoid node) where
+  mempty = EulerTourMonoid mempty mempty mempty mempty mempty
 
 instance Ord node => Measured (EulerTourMonoid node) (EulerTourNode node) where
   measure (EulerTourNode node) = EulerTourMonoid (pure node) mempty (pure node) (Set.singleton node) (pure 1)
